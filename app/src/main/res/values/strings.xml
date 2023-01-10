@@ -8,4 +8,6 @@
     <string name="exampleTextShort">Архип Иванович Куинджи (1842-1910)\n«Эльбрус. Снежные вершины» Между 1890-1895</string>
     <string name="contacts">Контакты</string>
     <string name="emailTextExample">st-nemchenko@yandex.ru</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
