@@ -16,4 +16,5 @@
     <string name="emailTextValue">emailTextValue</string>
     <string name="photoPathValue">photoPathValue</string>
     <string name="codeValue">codeValue</string>
+    <string name="imageTitleValue">imageTitleValue</string>
 </resources>

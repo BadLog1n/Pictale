@@ -68,6 +68,7 @@ class SearchFragment : Fragment() {
         map[getString(R.string.emailTextValue)] = it.child("email").value.toString()
         map[getString(R.string.photoPathValue)] = it.child("photo").value.toString()
         map[getString(R.string.codeValue)] = inputCode
+        map[getString(R.string.imageTitleValue)] = it.child("imageTitle").value.toString()
         for ((key, value) in map) {
             editor?.putString(key, value)
         }

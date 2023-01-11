@@ -29,8 +29,7 @@ class ContentFragment : Fragment() {
 
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentContentBinding.inflate(layoutInflater, container, false)
@@ -44,36 +43,14 @@ class ContentFragment : Fragment() {
 
         val imageRc: RecyclerView = view.findViewById(R.id.imagesRcView)
         imageRc.adapter = rcAdapter
-        rcAdapter.notifyItemChanged(rcAdapter.itemCount)
         rcAdapter.recordsList = ArrayList()
-        rcAdapter.addPhotoRecord(
-            PhotoRecord(
-                "$code.jpg"
+        val photoPathSplit = if (photoPath != "null") photoPath.split(";") else null
+        photoPathSplit?.forEach { item ->
+            rcAdapter.addPhotoRecord(
+                PhotoRecord(item)
             )
-        )
-        rcAdapter.addPhotoRecord(
-            PhotoRecord(
-                "$code.jpg"
-            )
-        )
-        rcAdapter.addPhotoRecord(
-            PhotoRecord(
-                "$code.jpg"
-            )
-        )
-        rcAdapter.addPhotoRecord(
-            PhotoRecord(
-                "$code.jpg"
-            )
-        )
-        rcAdapter.addPhotoRecord(
-            PhotoRecord(
-                "$code.jpg"
-            )
-        )
-        imageRc.adapter = rcAdapter
+        }
         rcAdapter.notifyItemChanged(rcAdapter.itemCount)
-        imageRc.adapter = rcAdapter
         val linearLayoutManager =
             LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, true)
         linearLayoutManager.stackFromEnd = true
@@ -91,20 +68,23 @@ class ContentFragment : Fragment() {
         )
         val allEntries: Map<String, *> = sharedPref?.all ?: return
 
+        var imageTitle = ""
         for ((key, value) in allEntries) {
             when (key) {
                 getString(R.string.codeValue) -> code = value.toString()
                 getString(R.string.photoPathValue) -> photoPath = value.toString()
                 getString(R.string.titleValue) -> binding.titleText.text = value.toString()
                 getString(R.string.mainTextValue) -> binding.mainText.text = value.toString()
-                getString(R.string.emailTextValue) -> binding.emailContactText.text = value.toString()
+                getString(R.string.emailTextValue) -> binding.emailContactText.text =
+                    value.toString()
+                getString(R.string.imageTitleValue) -> imageTitle = value.toString()
             }
         }
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 val imageRef = Firebase.storage.reference
                 val maxDownloadSize = 5L * 1024 * 1024 * 1024
-                val bytes = imageRef.child("$code/1.jpg").getBytes(maxDownloadSize).await()
+                val bytes = imageRef.child("$code/$imageTitle").getBytes(maxDownloadSize).await()
                 val bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
                 binding.mainImage.setImageBitmap(bmp)
                 binding.toImgProgress.visibility = View.GONE
