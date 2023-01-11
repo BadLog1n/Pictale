@@ -1,13 +1,14 @@
 package com.oneseed.pictale
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +20,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.net.URISyntaxException
 
 
 class ContentFragment : Fragment() {
@@ -60,6 +62,27 @@ class ContentFragment : Fragment() {
         binding.backAction.setOnClickListener {
             findNavController().navigateUp()
         }
+
+
+        binding.contactText.setOnClickListener {
+            if (isLink(binding.contactText.text.toString())) {
+                val openLink =
+                    Intent(Intent.ACTION_VIEW, Uri.parse(binding.contactText.text.toString()))
+                startActivity(openLink)
+
+            }
+        }
+
+
+    }
+
+    private fun isLink(str: String): Boolean {
+        return try {
+            val uri = Uri.parse(str)
+            uri.scheme != null
+        } catch (e: URISyntaxException) {
+            false
+        }
     }
 
     private fun displayValue() {
@@ -75,8 +98,7 @@ class ContentFragment : Fragment() {
                 getString(R.string.photoPathValue) -> photoPath = value.toString()
                 getString(R.string.titleValue) -> binding.titleText.text = value.toString()
                 getString(R.string.mainTextValue) -> binding.mainText.text = value.toString()
-                getString(R.string.emailTextValue) -> binding.emailContactText.text =
-                    value.toString()
+                getString(R.string.contactValue) -> binding.contactText.text = value.toString()
                 getString(R.string.imageTitleValue) -> imageTitle = value.toString()
             }
         }
