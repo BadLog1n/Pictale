@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -32,11 +33,13 @@ class SearchFragment : Fragment() {
 
         database = FirebaseDatabase.getInstance().getReference("key")
         binding.submit.setOnClickListener {
-            val inputCode = binding.codeInputText.text.toString()
-            if (inputCode.isNotEmpty()) {
-                database.child(inputCode).get().addOnSuccessListener {
+            val inputCode = binding.codeInputText.text
+            if (inputCode.toString().isNotEmpty()) {
+                database.child(inputCode.toString()).get().addOnSuccessListener {
                     if (it.exists()) {
                         getAllData(it)
+                        inputCode.clear()
+                        view.hideKeyboard()
                         view.findNavController().navigate(R.id.contentFragment)
                     } else Toast.makeText(requireContext(), "Код не найден", Toast.LENGTH_SHORT)
                         .show()
@@ -46,6 +49,12 @@ class SearchFragment : Fragment() {
 
         }
 
+    }
+
+
+    private fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
     private fun getAllData(it: DataSnapshot) {
