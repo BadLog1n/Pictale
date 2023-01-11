@@ -7,8 +7,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.oneseed.pictale.databinding.FragmentContentBinding
@@ -16,11 +19,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 
 
 class ContentFragment : Fragment() {
     private lateinit var binding: FragmentContentBinding
+    private var rcAdapter = ContentPhotoAdapter()
 
 
     override fun onCreateView(
@@ -35,8 +38,47 @@ class ContentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         displayValue()
-
         super.onViewCreated(view, savedInstanceState)
+
+        val imageRc: RecyclerView = view.findViewById(R.id.imagesRcView)
+        imageRc.adapter = rcAdapter
+        rcAdapter.notifyItemChanged(rcAdapter.itemCount)
+        rcAdapter.recordsList = ArrayList()
+        rcAdapter.addPhotoRecord(
+            PhotoRecord(
+                "1.jpg"
+            )
+        )
+        rcAdapter.addPhotoRecord(
+            PhotoRecord(
+                "1.jpg"
+            )
+        )
+        rcAdapter.addPhotoRecord(
+            PhotoRecord(
+                "1.jpg"
+            )
+        )
+        rcAdapter.addPhotoRecord(
+            PhotoRecord(
+                "1.jpg"
+            )
+        )
+        rcAdapter.addPhotoRecord(
+            PhotoRecord(
+                "1.jpg"
+            )
+        )
+        imageRc.adapter = rcAdapter
+        rcAdapter.notifyItemChanged(rcAdapter.itemCount)
+        imageRc.adapter = rcAdapter
+        val linearLayoutManager =
+            LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, true)
+        linearLayoutManager.stackFromEnd = true
+        imageRc.layoutManager = linearLayoutManager
+            Toast.makeText(requireContext(), rcAdapter.itemCount.toString(), Toast.LENGTH_SHORT).show()
+
+
 
         binding.backAction.setOnClickListener {
             findNavController().navigateUp()
