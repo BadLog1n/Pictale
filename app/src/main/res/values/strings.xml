@@ -10,4 +10,8 @@
     <string name="emailTextExample">st-nemchenko@yandex.ru</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sharedPref">sharedPref</string>
+    <string name="titleValue">titleValue</string>
+    <string name="mainTextValue">mainTextValue</string>
+    <string name="emailTextValue">emailTextValue</string>
 </resources>
