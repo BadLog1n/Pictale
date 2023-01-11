@@ -37,7 +37,7 @@ class SearchFragment : Fragment() {
             if (inputCode.toString().isNotEmpty()) {
                 database.child(inputCode.toString()).get().addOnSuccessListener {
                     if (it.exists()) {
-                        getAllData(it)
+                        getAllData(inputCode.toString(), it)
                         inputCode.clear()
                         view.hideKeyboard()
                         view.findNavController().navigate(R.id.contentFragment)
@@ -57,18 +57,22 @@ class SearchFragment : Fragment() {
         imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
-    private fun getAllData(it: DataSnapshot) {
+    private fun getAllData(inputCode: String, it: DataSnapshot) {
         val sharedPref: SharedPreferences? = activity?.getSharedPreferences(
             getString(R.string.sharedPref), Context.MODE_PRIVATE
         )
-        sharedPref?.edit()?.putString(
-            getString(R.string.titleValue), it.child("title").value.toString()
-        )?.apply()
-        sharedPref?.edit()?.putString(
-            getString(R.string.mainTextValue), it.child("mainText").value.toString()
-        )?.apply()
-        sharedPref?.edit()?.putString(
-            getString(R.string.emailTextValue), it.child("email").value.toString()
-        )?.apply()
+        val editor: SharedPreferences.Editor? = sharedPref?.edit()
+        val map: MutableMap<String, String> = HashMap()
+        map[getString(R.string.titleValue)] = it.child("title").value.toString()
+        map[getString(R.string.mainTextValue)] = it.child("mainText").value.toString()
+        map[getString(R.string.emailTextValue)] = it.child("email").value.toString()
+        map[getString(R.string.photoPathValue)] = it.child("photo").value.toString()
+        map[getString(R.string.codeValue)] = inputCode
+        for ((key, value) in map) {
+            editor?.putString(key, value)
+        }
+
+        editor?.apply()
+
     }
 }

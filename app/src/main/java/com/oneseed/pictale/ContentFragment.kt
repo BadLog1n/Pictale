@@ -24,6 +24,8 @@ import kotlinx.coroutines.tasks.await
 class ContentFragment : Fragment() {
     private lateinit var binding: FragmentContentBinding
     private var rcAdapter = ContentPhotoAdapter()
+    private lateinit var code: String
+    private lateinit var photoPath: String
 
 
     override fun onCreateView(
@@ -37,8 +39,8 @@ class ContentFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        displayValue()
         super.onViewCreated(view, savedInstanceState)
+        displayValue()
 
         val imageRc: RecyclerView = view.findViewById(R.id.imagesRcView)
         imageRc.adapter = rcAdapter
@@ -46,27 +48,27 @@ class ContentFragment : Fragment() {
         rcAdapter.recordsList = ArrayList()
         rcAdapter.addPhotoRecord(
             PhotoRecord(
-                "1.jpg"
+                "$code.jpg"
             )
         )
         rcAdapter.addPhotoRecord(
             PhotoRecord(
-                "1.jpg"
+                "$code.jpg"
             )
         )
         rcAdapter.addPhotoRecord(
             PhotoRecord(
-                "1.jpg"
+                "$code.jpg"
             )
         )
         rcAdapter.addPhotoRecord(
             PhotoRecord(
-                "1.jpg"
+                "$code.jpg"
             )
         )
         rcAdapter.addPhotoRecord(
             PhotoRecord(
-                "1.jpg"
+                "$code.jpg"
             )
         )
         imageRc.adapter = rcAdapter
@@ -76,8 +78,6 @@ class ContentFragment : Fragment() {
             LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, true)
         linearLayoutManager.stackFromEnd = true
         imageRc.layoutManager = linearLayoutManager
-            Toast.makeText(requireContext(), rcAdapter.itemCount.toString(), Toast.LENGTH_SHORT).show()
-
 
 
         binding.backAction.setOnClickListener {
@@ -89,22 +89,22 @@ class ContentFragment : Fragment() {
         val sharedPref: SharedPreferences? = activity?.getSharedPreferences(
             getString(R.string.sharedPref), Context.MODE_PRIVATE
         )
-        sharedPref?.getString(getString(R.string.titleValue), null)?.let {
-            binding.titleText.text = it
-        }
-        sharedPref?.getString(getString(R.string.mainTextValue), null)?.let {
-            binding.mainText.text = it
-        }
-        sharedPref?.getString(getString(R.string.emailTextValue), null)?.let {
-            binding.emailContactText.text = it
-        }
+        val allEntries: Map<String, *> = sharedPref?.all ?: return
 
-
+        for ((key, value) in allEntries) {
+            when (key) {
+                getString(R.string.codeValue) -> code = value.toString()
+                getString(R.string.photoPathValue) -> photoPath = value.toString()
+                getString(R.string.titleValue) -> binding.titleText.text = value.toString()
+                getString(R.string.mainTextValue) -> binding.mainText.text = value.toString()
+                getString(R.string.emailTextValue) -> binding.emailContactText.text = value.toString()
+            }
+        }
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 val imageRef = Firebase.storage.reference
                 val maxDownloadSize = 5L * 1024 * 1024 * 1024
-                val bytes = imageRef.child("1/1.jpg").getBytes(maxDownloadSize).await()
+                val bytes = imageRef.child("$code/1.jpg").getBytes(maxDownloadSize).await()
                 val bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
                 binding.mainImage.setImageBitmap(bmp)
                 binding.toImgProgress.visibility = View.GONE

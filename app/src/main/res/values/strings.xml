@@ -14,4 +14,6 @@
     <string name="titleValue">titleValue</string>
     <string name="mainTextValue">mainTextValue</string>
     <string name="emailTextValue">emailTextValue</string>
+    <string name="photoPathValue">photoPathValue</string>
+    <string name="codeValue">codeValue</string>
 </resources>
