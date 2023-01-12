@@ -1,5 +1,6 @@
 package com.oneseed.pictale
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -49,6 +50,16 @@ class SearchFragment : Fragment() {
 
         }
 
+        binding.question.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Уведомление")
+            builder.setMessage("О проекте")
+            builder.setPositiveButton("OK") { dialog, which ->
+                dialog.dismiss()
+            }
+            builder.show()
+
+        }
     }
 
 
