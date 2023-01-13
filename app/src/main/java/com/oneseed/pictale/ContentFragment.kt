@@ -28,6 +28,7 @@ class ContentFragment : Fragment() {
     private var rcAdapter = ContentPhotoAdapter()
     private lateinit var code: String
     private lateinit var photoPath: String
+    private lateinit var contactValue: String
 
 
     override fun onCreateView(
@@ -65,21 +66,16 @@ class ContentFragment : Fragment() {
 
 
         binding.contactText.setOnClickListener {
-            if (isLink(binding.contactText.text.toString())) {
-                val openLink =
-                    Intent(Intent.ACTION_VIEW, Uri.parse(binding.contactText.text.toString()))
+            if (isLink(contactValue)) {
+                val openLink = Intent(Intent.ACTION_VIEW, Uri.parse(contactValue))
                 startActivity(openLink)
-
             }
         }
-
-
     }
 
     private fun isLink(str: String): Boolean {
         return try {
-            val uri = Uri.parse(str)
-            uri.scheme != null
+            Uri.parse(str).scheme != null
         } catch (e: URISyntaxException) {
             false
         }
@@ -98,7 +94,15 @@ class ContentFragment : Fragment() {
                 getString(R.string.photoPathValue) -> photoPath = value.toString()
                 getString(R.string.titleValue) -> binding.titleText.text = value.toString()
                 getString(R.string.mainTextValue) -> binding.mainText.text = value.toString()
-                getString(R.string.contactValue) -> binding.contactText.text = value.toString()
+                getString(R.string.contactValue) -> {
+                    contactValue = value.toString()
+                    //проверить есть ли в value слово "http"
+
+                    if (value.toString().contains("http://")) binding.contactText.text =
+                        value.toString().substringAfter("http://")
+                    if (value.toString().contains("https://")) binding.contactText.text =
+                        value.toString().substringAfter("https://")
+                }
                 getString(R.string.imageTitleValue) -> imageTitle = value.toString()
             }
         }
