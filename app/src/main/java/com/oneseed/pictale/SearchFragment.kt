@@ -2,7 +2,9 @@ package com.oneseed.pictale
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -51,11 +53,19 @@ class SearchFragment : Fragment() {
         }
 
         binding.question.setOnClickListener {
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle("Уведомление")
-            builder.setMessage("О проекте")
-            builder.setPositiveButton("OK") { dialog, which ->
-                dialog.dismiss()
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("О приложении")
+            builder.setMessage("Чтобы перейти к описанию объекта, введите код в поле ниже и нажмите кнопку \"далее\"")
+            builder.setPositiveButton("OK") { _, _ -> }
+            builder.setNeutralButton("GitHub") { _, _ ->
+                val openLink =
+                    Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/badlog1n"))
+                startActivity(openLink)
+            }
+            builder.setNegativeButton("GitHub проекта") { _, _ ->
+                val openLink =
+                    Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/badlog1n/Pictale"))
+                startActivity(openLink)
             }
             builder.show()
 
