@@ -1,14 +1,13 @@
 package com.oneseed.pictale
 
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,8 +28,6 @@ class ContentFragment : Fragment() {
     private lateinit var code: String
     private lateinit var photoPath: String
     private lateinit var contactValue: String
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -39,7 +36,6 @@ class ContentFragment : Fragment() {
         return binding.root
 
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         displayValue()
@@ -59,11 +55,9 @@ class ContentFragment : Fragment() {
         linearLayoutManager.stackFromEnd = true
         imageRc.layoutManager = linearLayoutManager
 
-
         binding.backAction.setOnClickListener {
             findNavController().navigateUp()
         }
-
 
         binding.contactText.setOnClickListener {
             if (isLink(contactValue)) {
@@ -71,8 +65,25 @@ class ContentFragment : Fragment() {
                 startActivity(openLink)
             }
         }
-    }
 
+        fun copyToClipboard() {
+            val clipboard =
+                requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("text", contactValue)
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(requireContext(), "Текст скопирован", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.contactText.setOnLongClickListener {
+            copyToClipboard()
+            return@setOnLongClickListener true
+        }
+
+        binding.copyContact.setOnClickListener {
+            copyToClipboard()
+        }
+
+    }
     private fun isLink(str: String): Boolean {
         return try {
             Uri.parse(str).scheme != null
@@ -80,7 +91,6 @@ class ContentFragment : Fragment() {
             false
         }
     }
-
     private fun displayValue() {
         val sharedPref: SharedPreferences? = activity?.getSharedPreferences(
             getString(R.string.sharedPref), Context.MODE_PRIVATE

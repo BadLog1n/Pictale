@@ -17,20 +17,15 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.oneseed.pictale.databinding.FragmentSearchBinding
-
-
 class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
     private lateinit var database: DatabaseReference
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentSearchBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -58,8 +53,7 @@ class SearchFragment : Fragment() {
             builder.setMessage("Чтобы перейти к описанию объекта, введите код в поле ниже и нажмите кнопку \"далее\"")
             builder.setPositiveButton("OK") { _, _ -> }
             builder.setNeutralButton("GitHub") { _, _ ->
-                val openLink =
-                    Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/badlog1n"))
+                val openLink = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/badlog1n"))
                 startActivity(openLink)
             }
             builder.setNegativeButton("GitHub проекта") { _, _ ->
@@ -71,8 +65,6 @@ class SearchFragment : Fragment() {
 
         }
     }
-
-
     private fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
