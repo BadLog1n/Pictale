@@ -5,7 +5,17 @@
     <string name="back">Вернуться</string>
     <string name="exampleLongText">Тьма затягивает в неведомые глубины, страшит и манит. Свет слепит глаза, останавливает время, успокаивает. Небольшой кусок пространства отвоеван у ночного мрака. Лунный свет мягко касается горных вершин, выбеливает снег, падает, отражается от мелкой ряби водной поверхности. Мрак наступает…Архип Иванович Куинджи вошел в историю русского искусства как зачинатель новой фазы романтического пейзажа конца XIX – начала ХХ века. Среди немногих образных тем у художника ясно выделяется тема горного величия, решенная в условиях декоративной живописи. Световые эффекты строят иллюзию, театрально выстроенные планы – пространство, цвет форсируется, контрасты завышаются, живописная и тоновая шкала максимально расширяется за счет сложных технологических пируэтов и все это в пределах реалистического метода. Такова и картина курского собрания – «Эльбрус. Снежные вершины», ранее принадлежавшая «Обществу имени А.И.Куинджи».
     </string>
-    <string name="exampleTextShort">Архип Иванович Куинджи (1842-1910)\n«Эльбрус. Снежные вершины» Между 1890-1895</string>
-    <string name="contacts">Контакты</string>
+    <string name="exampleTextShort">Архип Иванович Куинджи(1842–1910)\n«Эльбрус. Снежные вершины» Между 1890–1895</string>
+    <string name="contacts">Контакт для связи</string>
     <string name="emailTextExample">st-nemchenko@yandex.ru</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sharedPref">sharedPref</string>
+    <string name="titleValue">titleValue</string>
+    <string name="mainTextValue">mainTextValue</string>
+    <string name="emailTextValue">emailTextValue</string>
+    <string name="photoPathValue">photoPathValue</string>
+    <string name="codeValue">codeValue</string>
+    <string name="imageTitleValue">imageTitleValue</string>
+    <string name="contactValue">contactValue</string>
 </resources>
